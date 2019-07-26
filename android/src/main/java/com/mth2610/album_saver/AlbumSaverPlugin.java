@@ -2,6 +2,7 @@ package com.mth2610.album_saver;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Handler;
 import android.util.Log;
 
 import android.content.res.AssetManager;
@@ -29,6 +30,7 @@ import java.io.InputStream;
 /** AlbumSaverPlugin */
 public class AlbumSaverPlugin implements MethodCallHandler {
   private final Activity activity;
+  private final Handler handler=new Handler();
   /** Plugin registration. */
   public static void registerWith(Registrar registrar) {
     final MethodChannel channel = new MethodChannel(registrar.messenger(), "album_saver");
@@ -64,7 +66,7 @@ public class AlbumSaverPlugin implements MethodCallHandler {
         File myDir = new File(root);
         myDir.mkdirs();
         String fname = String.valueOf(System.currentTimeMillis()) + ".png";
-        File file = new File(myDir, fname);
+        final File file = new File(myDir, fname);
         if (file.exists()) file.delete();
         try {
             FileOutputStream out = new FileOutputStream(file);
@@ -80,7 +82,12 @@ public class AlbumSaverPlugin implements MethodCallHandler {
             out.flush();
             out.close();
             out = null;
-            result.success(file.getAbsolutePath());
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    result.success(file.getAbsolutePath());
+                }
+            });
             // MediaScannerConnection.scanFile(this.activity,
             //   new String[] { file.getAbsolutePath() }, null,
             //   new MediaScannerConnection.OnScanCompletedListener() {
@@ -102,9 +109,14 @@ public class AlbumSaverPlugin implements MethodCallHandler {
     new Thread(new Runnable() {
       public void run() {
         String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString()+ "/"+albumName;
-        File myDir = new File(root);
+        final File myDir = new File(root);
         myDir.mkdirs();
-        result.success(myDir.getAbsolutePath());
+          handler.post(new Runnable() {
+              @Override
+              public void run() {
+                  result.success(myDir.getAbsolutePath());
+              }
+          });
       }
     }).start();
   }
@@ -112,8 +124,13 @@ public class AlbumSaverPlugin implements MethodCallHandler {
   private void getDcimPath(final Result result){
     new Thread(new Runnable() {
       public void run() {
-        String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString();
-        result.success(root);
+        final String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString();
+          handler.post(new Runnable() {
+              @Override
+              public void run() {
+                  result.success(root);
+              }
+          });
       }
     }).start();
   }
