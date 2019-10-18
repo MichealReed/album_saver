@@ -2,7 +2,7 @@ package com.mth2610.album_saver;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Handler;
+import android.os.*;
 import android.util.Log;
 
 import android.content.res.AssetManager;
@@ -14,7 +14,6 @@ import android.media.MediaScannerConnection.MediaScannerConnectionClient;
 import android.net.Uri;
 
 import android.os.Environment;
-import android.os.*;
 import android.content.Context;
 
 import io.flutter.plugin.common.MethodCall;
