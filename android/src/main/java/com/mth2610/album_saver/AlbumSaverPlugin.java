@@ -58,7 +58,7 @@ public class AlbumSaverPlugin implements MethodCallHandler {
   }
 
   private void saveToAlbum(final String filePath, final String albumName, final Result result){
-    new Thread(new Runnable() {
+    new runOnUiThread(new Runnable() {
       public void run() {
        try {
         InputStream in;
@@ -106,7 +106,7 @@ public class AlbumSaverPlugin implements MethodCallHandler {
      }).start();
   }
   private void createAlbum(final String albumName, final Result result){
-    new Thread(new Runnable() {
+    new runOnUiThread(new Runnable() {
       public void run() {
         String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString()+ "/"+albumName;
         final File myDir = new File(root);
@@ -122,7 +122,7 @@ public class AlbumSaverPlugin implements MethodCallHandler {
   }
 
   private void getDcimPath(final Result result){
-    new Thread(new Runnable() {
+    new runOnUiThread(new Runnable() {
       public void run() {
         final String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString();
           handler.post(new Runnable() {
@@ -134,4 +134,8 @@ public class AlbumSaverPlugin implements MethodCallHandler {
       }
     }).start();
   }
+
+  private void runOnUiThread(Runnable runnable) {
+        activity.runOnUiThread(runnable);
+    }
 }
