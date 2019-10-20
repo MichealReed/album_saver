@@ -45,8 +45,9 @@ public class AlbumSaverPlugin implements MethodCallHandler {
   public void onMethodCall(MethodCall call, Result result) {
     if (call.method.equals("saveToAlbum")) {
       String filePath = call.argument("filePath");
+      String fileName = call.argument("fileName");
       String albumName = call.argument("albumName");
-      saveToAlbum(filePath, albumName, result);
+      saveToAlbum(filePath, fileName, albumName, result);
     } else if (call.method.equals("createAlbum")) {
       String albumName = call.argument("albumName");
       createAlbum(albumName, result);
@@ -57,7 +58,7 @@ public class AlbumSaverPlugin implements MethodCallHandler {
     }
   }
 
-  private void saveToAlbum(final String filePath, final String albumName, final Result result){
+  private void saveToAlbum(final String filePath, final String fileName, final String albumName, final Result result){
     new Thread(new Runnable() {
       public void run() {
        try {
@@ -65,7 +66,7 @@ public class AlbumSaverPlugin implements MethodCallHandler {
         String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString()+ "/"+albumName;
         File myDir = new File(root);
         myDir.mkdirs();
-        String fname = String.valueOf(System.currentTimeMillis()) + ".png";
+        String fname = fileName + ".png";
         final File file = new File(myDir, fname);
         if (file.exists()) file.delete();
         try {
