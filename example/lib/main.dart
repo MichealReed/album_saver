@@ -116,7 +116,7 @@ class _MyAppState extends State<MyApp> {
             _isSaving = true;
           });
           if(_image!=null){
-            await AlbumSaver.saveToAlbum(filePath: _image.path, albumName: "test_album_saver2");
+            await AlbumSaver.saveToAlbum(filePath: _image.path, fileName: "abc", albumName: "test_album_saver2");
             setState(() {
               _isSaving = false;
             });

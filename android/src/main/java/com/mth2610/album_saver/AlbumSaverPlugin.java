@@ -66,7 +66,7 @@ public class AlbumSaverPlugin implements MethodCallHandler {
         String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString()+ "/"+albumName;
         File myDir = new File(root);
         myDir.mkdirs();
-        String fname = fileName + ".png";
+        String fname = String.valueOf(fileName + ".png");
         final File file = new File(myDir, fname);
         if (file.exists()) file.delete();
         try {
