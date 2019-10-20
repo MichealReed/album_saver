@@ -2,7 +2,7 @@ package com.mth2610.album_saver;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.*;
+import android.os.Handler;
 import android.util.Log;
 
 import android.content.res.AssetManager;
@@ -58,7 +58,7 @@ public class AlbumSaverPlugin implements MethodCallHandler {
   }
 
   private void saveToAlbum(final String filePath, final String albumName, final Result result){
-    Handler(Looper.getMainLooper()).post(new Runnable() {
+    activity.runOnUiThread(new Runnable() {
       public void run() {
        try {
         InputStream in;
@@ -77,7 +77,7 @@ public class AlbumSaverPlugin implements MethodCallHandler {
                 out.write(buffer, 0, read);
             }
             in.close();
-            in = null;  
+            in = null;
             // write the output file
             out.flush();
             out.close();
@@ -106,7 +106,7 @@ public class AlbumSaverPlugin implements MethodCallHandler {
      }).start();
   }
   private void createAlbum(final String albumName, final Result result){
-    Handler(Looper.getMainLooper()).post(new Runnable() {
+    activity.runOnUiThread(new Runnable() {
       public void run() {
         String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString()+ "/"+albumName;
         final File myDir = new File(root);
@@ -122,7 +122,7 @@ public class AlbumSaverPlugin implements MethodCallHandler {
   }
 
   private void getDcimPath(final Result result){
-    Handler(Looper.getMainLooper()).post(new Runnable() {
+    activity.runOnUiThread(new Runnable() {
       public void run() {
         final String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString();
           handler.post(new Runnable() {
