@@ -2,7 +2,7 @@ package com.mth2610.album_saver;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Handler;
+import android.os.*;
 import android.util.Log;
 
 import android.content.res.AssetManager;
@@ -82,7 +82,7 @@ public class AlbumSaverPlugin implements MethodCallHandler {
             out.flush();
             out.close();
             out = null;
-            handler.post(new Runnable() {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override
                 public void run() {
                     result.success(file.getAbsolutePath());
@@ -103,10 +103,10 @@ public class AlbumSaverPlugin implements MethodCallHandler {
         e.printStackTrace();
        }
       }
-     }).start();
+     });
   }
   private void createAlbum(final String albumName, final Result result){
-    new Thread(new Runnable() {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
       public void run() {
         String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString()+ "/"+albumName;
         final File myDir = new File(root);
@@ -118,20 +118,21 @@ public class AlbumSaverPlugin implements MethodCallHandler {
               }
           });
       }
-    }).start();
+    });
   }
 
   private void getDcimPath(final Result result){
-    new Thread(new Runnable() {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
       public void run() {
         final String root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString();
-          handler.post(new Runnable() {
+                new Handler(Looper.getMainLooper()).post(new Runnable() {
+
               @Override
               public void run() {
                   result.success(root);
               }
           });
       }
-    }).start();
+    });
   }
 }
